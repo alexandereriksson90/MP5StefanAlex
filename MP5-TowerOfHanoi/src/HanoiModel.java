@@ -39,6 +39,17 @@ public class HanoiModel
     for (int n = 0; n < numberOfDisks; n++)
       getRod(0).push(new Disk());
     }
+  public int getRod(Iterable<Disk> rod)
+  {
+	  int index = 0;
+	  for(int i = 0; i < 3; i++)
+	  {
+		 if(rods[i].equals(rod))
+			 index = i;
+	  }
+	
+	  return index;
+  }
 
   public Iterable<Disk> getIterableRod(int index)
     {
@@ -49,4 +60,6 @@ public class HanoiModel
     {
     return rods[index % rods.length];
     }
+  
+  
   }

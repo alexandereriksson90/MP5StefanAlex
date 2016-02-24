@@ -5,14 +5,18 @@ import javax.swing.*;
 class TowerOfHanoiApp extends JFrame
 {
 	private static final long serialVersionUID = 1L;
+	
 	private HanoiModel hanoiModel = new HanoiModel();
 	private RodPanel rodPanelA = new RodPanel(hanoiModel.getIterableRod(0));
 	private RodPanel rodPanelB = new RodPanel(hanoiModel.getIterableRod(1));
 	private RodPanel rodPanelC = new RodPanel(hanoiModel.getIterableRod(2));
-	private RodManager mediator = new RodManager(hanoiModel);
-	private RodPanel rodPanelManual1 = new RodPanel(hanoiModel.getIterableRod(0), mediator);
-	private RodPanel rodPanelManual2 = new RodPanel(hanoiModel.getIterableRod(1), mediator);
-	private RodPanel rodPanelManual3 = new RodPanel(hanoiModel.getIterableRod(2), mediator);
+	
+	private HanoiModel hanoiManualModel = new HanoiModel();
+	private RodManager mediator = new RodManager(hanoiManualModel);
+	private RodPanel rodPanelManual1 = new RodPanel(hanoiManualModel.getIterableRod(0), mediator);
+	private RodPanel rodPanelManual2 = new RodPanel(hanoiManualModel.getIterableRod(1), mediator);
+	private RodPanel rodPanelManual3 = new RodPanel(hanoiManualModel.getIterableRod(2), mediator);
+	
 	private HanoiSolver hanoiSolver;
 	private Container c;
 	private JPanel centerP;
@@ -24,6 +28,10 @@ class TowerOfHanoiApp extends JFrame
 		hanoiModel.addObserver(1, rodPanelB);
 		hanoiModel.addObserver(2, rodPanelC);
 		
+		hanoiManualModel.addObserver(0, rodPanelManual1);
+		hanoiManualModel.addObserver(1, rodPanelManual2);
+		hanoiManualModel.addObserver(2, rodPanelManual3);
+		
 		setJMenuBar(makeMenuBar());
 		centerP = makeCenterPanel();
 		JPanel southP = makeSouthPanel();
@@ -34,6 +42,7 @@ class TowerOfHanoiApp extends JFrame
 		c.add(southP, BorderLayout.SOUTH);
 		hanoiSolver = new HanoiSolverRecursiveImpl(hanoiModel);
 		hanoiModel.reset();
+		hanoiManualModel.reset();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(800, 600);
 		setLocationRelativeTo(null);
@@ -66,6 +75,7 @@ class TowerOfHanoiApp extends JFrame
 		{
 			hanoiSolver.halt();
 			hanoiModel.setNumberOfDisks(disks);
+			hanoiManualModel.setNumberOfDisks(disks);
 		}
 	}
 
@@ -123,7 +133,7 @@ class TowerOfHanoiApp extends JFrame
 					
 				} catch (Exception e)
 				{
-					hanoiModel.reset();
+					hanoiManualModel.reset();
 				}
 				java.awt.Toolkit.getDefaultToolkit().beep();
 			}
@@ -134,7 +144,17 @@ class TowerOfHanoiApp extends JFrame
 	{
 		System.exit(0);
 	}
-
+	
+	private void redo()
+	{
+		mediator.redo(); 
+	}
+	
+	private void undo()
+	{
+		mediator.undo();
+	}
+	
 	private JMenuBar makeMenuBar()
 	{
 		JMenuItem ringsMI = new JMenuItem("Set rings");
@@ -205,6 +225,22 @@ class TowerOfHanoiApp extends JFrame
 		JButton startB = new JButton("Auto-Solve");
 		JButton stopB = new JButton("Stop");
 		JButton quitB = new JButton("Quit");
+		JButton undoB = new JButton("Undo");
+		JButton redoB = new JButton("Redo");
+		redoB.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent ae)
+			{
+				redo();
+			}
+		});
+		undoB.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent ae)
+			{
+				undo();
+			}
+		});
 		startManual.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent ae)
@@ -236,8 +272,11 @@ class TowerOfHanoiApp extends JFrame
 		JPanel southP = new JPanel();
 		southP.add(startManual);
 		southP.add(startB);
+		southP.add(undoB);
+		southP.add(redoB);
 		southP.add(stopB);
 		southP.add(quitB);
+		
 		return southP;
 	}
 

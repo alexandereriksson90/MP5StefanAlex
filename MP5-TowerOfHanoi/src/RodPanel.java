@@ -12,8 +12,6 @@ class RodPanel extends JPanel implements Observer
 	private static final long serialVersionUID = 1L;
 	private Iterable<Disk> rod;
 	private Color rodColor = Color.yellow;
-	private boolean selected = false;
-	
 
 	public RodPanel(Iterable<Disk> rod)
 	{
@@ -32,17 +30,16 @@ class RodPanel extends JPanel implements Observer
 			public void mouseClicked(MouseEvent e)
 			{
 
-				// prata med en mediator?
-				if(!selected)
+				
+				if(mediator.hasSelected())
 				{
-					selected = true;
-					rodColor = Color.red;		
+					mediator.gotSelected(getRod());
 				}
 					
 				else
 				{
-					selected = false;
-					rodColor = Color.yellow;								
+					mediator.gotSelected(getRod());
+					rodColor = Color.red;								
 				}					
 				repaint();
 			}
@@ -50,7 +47,10 @@ class RodPanel extends JPanel implements Observer
 
 		});
 	}
-	
+	public Iterable<Disk> getRod()
+	{
+		return rod;
+	}
 
 	public void paintComponent(Graphics g)
 	{
@@ -78,13 +78,14 @@ class RodPanel extends JPanel implements Observer
 			}
 		} catch (ConcurrentModificationException cme)
 		{
-			// the model has changed during rendering
+			
 		}
 	}
 
 	@Override
 	public void update(Observable o, Object arg)
 	{
+		rodColor = Color.yellow;
 		repaint();
 	}
 }
