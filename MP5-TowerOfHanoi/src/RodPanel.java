@@ -19,7 +19,7 @@ class RodPanel extends JPanel implements Observer
 		setBackground(Color.black);
 		this.rod = rod;
 	}
-	
+
 	public RodPanel(Iterable<Disk> rod, RodManager mediator)
 	{
 		super(true);
@@ -30,23 +30,22 @@ class RodPanel extends JPanel implements Observer
 			public void mouseClicked(MouseEvent e)
 			{
 
-				
-				if(mediator.hasSelected())
+				if (mediator.hasSelected())
 				{
 					mediator.gotSelected(getRod());
 				}
-					
+
 				else
 				{
 					mediator.gotSelected(getRod());
-					rodColor = Color.red;								
-				}					
+					rodColor = Color.red;
+				}
 				repaint();
 			}
 
-
 		});
 	}
+
 	public Iterable<Disk> getRod()
 	{
 		return rod;
@@ -78,7 +77,7 @@ class RodPanel extends JPanel implements Observer
 			}
 		} catch (ConcurrentModificationException cme)
 		{
-			
+
 		}
 	}
 

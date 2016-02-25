@@ -17,12 +17,12 @@ public class CommandManager
 		
 	}
 
-	public boolean isUndoAvailable()
+	public boolean undoAvailable()
 	{
 		return !undoStack.empty();
 	}
 	
-	public boolean isRedoAvailable() {
+	public boolean redoAvailable() {
         return !redoStack.empty();
     }
 

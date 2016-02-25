@@ -1,5 +1,5 @@
 
-public class RodManager 
+public class RodManager
 {
 	private HanoiModel model;
 	private int selectedRod;
@@ -30,14 +30,16 @@ public class RodManager
 		}
 
 	}
+
 	public void redo()
 	{
-		if(commander.isRedoAvailable())
+		if (commander.redoAvailable())
 			commander.redo();
 	}
+
 	public void undo()
 	{
-		if(commander.isUndoAvailable())
+		if (commander.undoAvailable())
 			commander.undo();
 	}
 
@@ -49,11 +51,13 @@ public class RodManager
 	private class MoveCommand implements Command
 	{
 		private int fromRod, toRod;
+
 		public MoveCommand(int fromRod, int toRod)
 		{
 			this.fromRod = fromRod;
 			this.toRod = toRod;
 		}
+
 		public void execute()
 		{
 			model.move(fromRod, toRod);

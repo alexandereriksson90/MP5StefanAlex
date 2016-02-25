@@ -5,18 +5,18 @@ import javax.swing.*;
 class TowerOfHanoiApp extends JFrame
 {
 	private static final long serialVersionUID = 1L;
-	
+
 	private HanoiModel hanoiModel = new HanoiModel();
 	private RodPanel rodPanelA = new RodPanel(hanoiModel.getIterableRod(0));
 	private RodPanel rodPanelB = new RodPanel(hanoiModel.getIterableRod(1));
 	private RodPanel rodPanelC = new RodPanel(hanoiModel.getIterableRod(2));
-	
+
 	private HanoiModel hanoiManualModel = new HanoiModel();
 	private RodManager mediator = new RodManager(hanoiManualModel);
 	private RodPanel rodPanelManual1 = new RodPanel(hanoiManualModel.getIterableRod(0), mediator);
 	private RodPanel rodPanelManual2 = new RodPanel(hanoiManualModel.getIterableRod(1), mediator);
 	private RodPanel rodPanelManual3 = new RodPanel(hanoiManualModel.getIterableRod(2), mediator);
-	
+
 	private HanoiSolver hanoiSolver;
 	private Container c;
 	private JPanel centerP;
@@ -27,13 +27,13 @@ class TowerOfHanoiApp extends JFrame
 		hanoiModel.addObserver(0, rodPanelA);
 		hanoiModel.addObserver(1, rodPanelB);
 		hanoiModel.addObserver(2, rodPanelC);
-		
+
 		hanoiManualModel.addObserver(0, rodPanelManual1);
 		hanoiManualModel.addObserver(1, rodPanelManual2);
 		hanoiManualModel.addObserver(2, rodPanelManual3);
-		
+
 		setJMenuBar(makeMenuBar());
-		centerP = makeCenterPanel();
+		centerP = makeManualCenterPanel();
 		JPanel southP = makeSouthPanel();
 		c = getContentPane();
 		c.setBackground(Color.black);
@@ -91,13 +91,13 @@ class TowerOfHanoiApp extends JFrame
 
 	private void start()
 	{
-		
+
 		c.remove(centerP);
 		centerP = makeCenterPanel();
 		c.add(centerP, BorderLayout.CENTER);
 		setVisible(true);
 		repaint();
-		
+
 		new Thread()
 		{
 			public void run()
@@ -117,20 +117,20 @@ class TowerOfHanoiApp extends JFrame
 
 	private void startManual()
 	{
-		
+
 		c.remove(centerP);
 		centerP = makeManualCenterPanel();
 		c.add(centerP, BorderLayout.CENTER);
 		setVisible(true);
 		repaint();
-		
+
 		new Thread()
 		{
 			public void run()
 			{
 				try
 				{
-					
+
 				} catch (Exception e)
 				{
 					hanoiManualModel.reset();
@@ -144,17 +144,17 @@ class TowerOfHanoiApp extends JFrame
 	{
 		System.exit(0);
 	}
-	
+
 	private void redo()
 	{
-		mediator.redo(); 
+		mediator.redo();
 	}
-	
+
 	private void undo()
 	{
 		mediator.undo();
 	}
-	
+
 	private JMenuBar makeMenuBar()
 	{
 		JMenuItem ringsMI = new JMenuItem("Set rings");
@@ -199,7 +199,7 @@ class TowerOfHanoiApp extends JFrame
 			centerP.add(new JLabel(""));
 		return centerP;
 	}
-	
+
 	private JPanel makeManualCenterPanel()
 	{
 		JPanel centerP = new JPanel();
@@ -276,7 +276,7 @@ class TowerOfHanoiApp extends JFrame
 		southP.add(redoB);
 		southP.add(stopB);
 		southP.add(quitB);
-		
+
 		return southP;
 	}
 
